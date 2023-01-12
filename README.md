@@ -3,13 +3,14 @@ everything you need to know about Custom Django User Model
 
 
 
-AbstractUser
+AbstractUser:
+
 AbstractUser class inherits the User class and is used to add Additional Fields required for your User in Database itself. SO its change the schema of the database. It is basically used to add fields like date_of_birth , location and bio etc. to the existing User model This is Done to the very Beginning of the project. which means you will get the complete field which by default come with the user Model plus the following field that you add/define.
 
 
 
 
-AbstractBaseUser
+AbstractBaseUser:
 
 AbstractBaseUser has the authentication functionality only , it has no actual fields you will supply the fields to use when you subclass.
 
