@@ -9,16 +9,20 @@ from django.contrib.auth.models import (AbstractBaseUser,BaseUserManager)
 #that's how you create and save a user
 class MyUserManager(BaseUserManager):
     #takes all the required fields as arguments
-   def create_user(self,email,password=None,is_staff=False,is_admin=False,is_active=True):
+   def create_user(self,email,full_name,password=None,is_staff=False,is_admin=False,is_active=True):
 
     if not email:
         raise ValueError("Users must have an email adress")
 
     if not password:
         raise ValueError("Users must have a password")
+
+    if not full_name:
+        raise ValueError("Users must have a full name")
     
     user_obj=self.model(
-        email=self.normalize_email(email)
+        email=self.normalize_email(email),
+        full_name=full_name
     )
     user_obj.set_password(password)
     user_obj.active=is_active
@@ -27,17 +31,19 @@ class MyUserManager(BaseUserManager):
     user_obj.save(using=self._db)
     return user_obj
 
-   def create_staff(self,email,password=None):
+   def create_staff(self,email,full_name,password=None):
      user=self.create_user(
         email,
+        full_name,
         password=password,
         is_staff=True
      )  
      return user
     
-   def create_superuser(self,email,password=None):
+   def create_superuser(self,email,full_name,password=None):
        user=self.create_user(
         email,
+        full_name,
         password=password,
         is_staff=True,
         is_admin=True
@@ -47,7 +53,7 @@ class MyUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(max_length=255,unique=True)
-    #full_name = models.CharField(max_length=255,null=True,blank=True)
+    full_name = models.CharField(max_length=255,null=True,blank=True)
     active= models.BooleanField(default=True)  #can login
     staff= models.BooleanField(default=False) #staff non super user
     admin = models.BooleanField(default=False)#super user
@@ -57,13 +63,13 @@ class CustomUser(AbstractBaseUser):
 
     USERNAME_FIELD='email'
     #USERNAME_FIELD and password are required by defult 
-    REQUIRED_FIELDS=[] #will berequired while : python manage.py createsuperuser
+    REQUIRED_FIELDS=['full_name'] #will berequired while : python manage.py createsuperuser
 #ok
 
     def __str__(self):
         return self.email
     def get_full_name(self):
-        return self.email
+        return self.full_name
     def get_short_name(self):
         return self.email
 
