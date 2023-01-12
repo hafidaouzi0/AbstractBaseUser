@@ -67,6 +67,14 @@ class CustomUser(AbstractBaseUser):
     def get_short_name(self):
         return self.email
 
+
+    def has_perm(self,perm,obj=None):
+        return True
+    
+    def has_module_perms(self,app_label):
+        return True
+
+
 #CustomUser.active is the same as CustomerUser.is_admin
     @property
     def is_staff(self):

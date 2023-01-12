@@ -123,7 +123,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#commit
+
 #this will make django craete a nrwuser table instead of the built-in user table 
 # Change Auth User Model to our Custom Model
 #change the buil-in user model to ours
